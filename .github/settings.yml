@@ -20,46 +20,79 @@ repository:
   enable_automated_security_fixes: true
   enable_vulnerability_alerts: true
 
-labels:
+#labels:
   # unused for now
 
-milestones:
+#milestones:
   # unused for now
 
-collaborators:
+#collaborators:
   # unused for now
 
-teams:
+#teams:
   # unused for now
 
-branches:
+#branches:
+  # unused for now
+  # requires that the branches already exist
+  # one required reviewer
+
+rulesets:
   # one required reviewer
   - name: main
-    protection:
-      required_pull_request_reviews:
-        required_approving_review_count: 1
-        dismiss_stale_reviews: true
-      required_status_checks: null
-      enforce_admins: null
-      required_linear_history: false
-      restrictions: null
+    target: branch
+    enforcement: active
+    conditions:
+      ref_name:
+        include:
+          - "refs/heads/main"
+        exclude: []
+    rules:
+      - type: pull_request
+        parameters:
+          dismiss_stale_reviews_on_push: true
+          require_code_owner_review: false
+          require_last_push_approval: true
+          required_approving_review_count: 1
+          required_review_thread_resolution: false
+      - type: non_fast_forward
+      - type: deletion
   # no required reviewers
   - name: UAT
-    protection:
-      required_pull_request_reviews:
-        required_approving_review_count: 0
-        dismiss_stale_reviews: true
-      required_status_checks: null
-      enforce_admins: null
-      required_linear_history: false
-      restrictions: null
-  # no required revierwers, requires linear history to force squash merging
+    target: branch
+    enforcement: active
+    conditions:
+      ref_name:
+        include:
+          - "refs/heads/UAT"
+        exclude: []
+    rules:
+      - type: pull_request
+        parameters:
+          dismiss_stale_reviews_on_push: true
+          require_code_owner_review: false
+          require_last_push_approval: true
+          required_approving_review_count: 0
+          required_review_thread_resolution: false
+      - type: non_fast_forward
+      - type: deletion
+  # no required reviewers, requires linear history to force squash merging
   - name: E2E
-    protection:
-      required_pull_request_reviews:
-        required_approving_review_count: 0
-        dismiss_stale_reviews: true
-      required_status_checks: null
-      enforce_admins: null
-      required_linear_history: true
-      restrictions: null
+    target: branch
+    enforcement: active
+    conditions:
+      ref_name:
+        include:
+          - "refs/heads/E2E"
+        exclude: []
+    rules:
+      - type: pull_request
+        parameters:
+          dismiss_stale_reviews_on_push: true
+          require_code_owner_review: false
+          require_last_push_approval: true
+          required_approving_review_count: 0
+          required_review_thread_resolution: false
+      - type: non_fast_forward
+      - type: deletion
+      - type: required_linear_history
