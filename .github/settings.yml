@@ -53,7 +53,7 @@ branches:
       enforce_admins: null
       required_linear_history: false
       restrictions: null
-  # no required revierwers, requires linear history to force squash merging
+  # no required reviewers, requires linear history to force squash merging
   - name: E2E
     protection:
       required_pull_request_reviews:
