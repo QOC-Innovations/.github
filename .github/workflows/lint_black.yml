@@ -1,0 +1,28 @@
+name: Check Python Formatting (Black)
+
+on:
+  pull_request:
+    types: [synchronize, ready_for_review] # opened?
+    paths:
+        - '**.py'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint Python code
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint Python files
+        uses: psf/black@stable
+        with:
+          options: >
+            --diff --check > temp_output.txt
+      - name: Comment Lint Results
+        env:
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          PR: ${{github.event.pull_request.html_url}}
+        run: |
+          echo "Last step status"
+          echo $?
+          gh pr comment $PR --body $(cat temp_output.txt)
+        
