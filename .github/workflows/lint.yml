@@ -1,0 +1,57 @@
+name: Lint
+
+on:
+  pull_request:
+    types: [synchronize, ready_for_review]
+    paths:
+        - '**.py'
+        - '**.xml'
+
+jobs:
+  Python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: tj-actions/changed-files@v45
+        id: changed-python-files
+        with:
+          files: |
+            **.py      
+      - name: Lint Python files
+        if: steps.changed-python-files.outputs.any_changed == 'true'
+        uses: psf/black@stable
+        with:
+          options: >
+            --diff --check
+  XML:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: tj-actions/changed-files@v45
+        id: changed-xml-files
+        with:
+          files: |
+            **.xml
+      - name: Lint XML files
+        if: steps.changed-xml-files.outputs.any_changed == 'true'
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-xml-files.outputs.all_changed_files }}
+        shell: bash {0}
+        run: |
+          sudo apt-get update
+          sudo apt-get install libxml2-utils
+
+          for file in ${ALL_CHANGED_FILES}; do
+            echo "Linting $file..."
+            xmllint --noout $file 2>temp
+            ((PASS = PASS + $?))
+          done
+
+          if [ $PASS ]; then
+            echo "\`\`\`xml" >> $GITHUB_STEP_SUMMARY
+            echo "$(cat ./temp)" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            echo $(cat ./temp) # Write to console output
+          fi
+
+          exit $PASS
