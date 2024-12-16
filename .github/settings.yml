@@ -50,6 +50,7 @@ rulesets:
     rules:
       - type: pull_request
         parameters:
+          allowed_merge_methods: ["merge"]
           dismiss_stale_reviews_on_push: true
           require_code_owner_review: false
           require_last_push_approval: true
@@ -69,6 +70,7 @@ rulesets:
     rules:
       - type: pull_request
         parameters:
+          allowed_merge_methods: ["merge"]
           dismiss_stale_reviews_on_push: true
           require_code_owner_review: false
           require_last_push_approval: true
@@ -88,6 +90,7 @@ rulesets:
     rules:
       - type: pull_request
         parameters:
+          allowed_merge_methods: ["squash"]
           dismiss_stale_reviews_on_push: true
           require_code_owner_review: false
           require_last_push_approval: true
@@ -95,4 +98,3 @@ rulesets:
           required_review_thread_resolution: false
       - type: non_fast_forward
       - type: deletion
-      - type: required_linear_history
