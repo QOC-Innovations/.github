@@ -17,6 +17,12 @@ jobs:
         with:
           files: |
             **.py      
+      - name: Debug
+        env: 
+          ALL_CHANGED_FILES: ${{ steps.changed-python-files.outputs.all_changed_files }}
+        shell: bash
+        run: |
+          echo "Changed Files: ${ALL_CHANGED_FILES}"
       - name: Lint Python files
         if: steps.changed-python-files.outputs.any_changed == 'true'
         env: 
