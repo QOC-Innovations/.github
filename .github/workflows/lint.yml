@@ -19,8 +19,6 @@ jobs:
             **.py      
       - name: Lint Python files
         if: steps.changed-python-files.outputs.any_changed == 'true'
-        env: 
-          ALL_CHANGED_FILES: ${{ steps.changed-python-files.outputs.all_changed_files }}
         uses: psf/black@stable
         with:
           options: >
