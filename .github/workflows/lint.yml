@@ -23,6 +23,8 @@ jobs:
         with:
           options: >
             --diff --check
+          src: >
+            ${{ steps.changed-python-files.outputs.all_changed_files }}
   XML:
     runs-on: ubuntu-latest
     steps:
