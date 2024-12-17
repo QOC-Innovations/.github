@@ -32,7 +32,7 @@ jobs:
           options: >
             --diff --check
           src: >
-            ${ALL_CHANGED_FILES}
+            "$ALL_CHANGED_FILES"
   XML:
     runs-on: ubuntu-latest
     steps:
