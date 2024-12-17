@@ -32,7 +32,7 @@ jobs:
           options: >
             --diff --check
           src: >
-            "$ALL_CHANGED_FILES"
+            ${{ steps.changed-python-files.outputs.all_changed_files }}
   XML:
     runs-on: ubuntu-latest
     steps:
