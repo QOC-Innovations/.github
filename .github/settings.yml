@@ -58,7 +58,6 @@ rulesets:
           required_review_thread_resolution: false
       - type: non_fast_forward
       - type: deletion
-  # no required reviewers
   - name: UAT
     target: branch
     enforcement: active
@@ -74,11 +73,11 @@ rulesets:
           dismiss_stale_reviews_on_push: true
           require_code_owner_review: false
           require_last_push_approval: true
-          required_approving_review_count: 0
+          required_approving_review_count: 1
           required_review_thread_resolution: false
       - type: non_fast_forward
       - type: deletion
-  # no required reviewers, requires linear history to force squash merging
+  # requires linear history to force squash merging
   - name: E2E
     target: branch
     enforcement: active
@@ -94,7 +93,7 @@ rulesets:
           dismiss_stale_reviews_on_push: true
           require_code_owner_review: false
           require_last_push_approval: true
-          required_approving_review_count: 0
+          required_approving_review_count: 1
           required_review_thread_resolution: false
       - type: non_fast_forward
       - type: deletion
