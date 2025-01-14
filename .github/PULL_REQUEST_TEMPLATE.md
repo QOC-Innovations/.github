@@ -24,8 +24,10 @@ If this PR is for a bug fix, explain how to reproduce the bug
 
 - [ ] Custom code follows [PEP 8](https://peps.python.org/pep-0008/) using [black formatter](https://black.readthedocs.io/en/stable/)
     - 3rd party modules can be left unformatted
+- [ ] Code documentation is complete
+  - [ ] All functions have docstrings
+  - [ ] [All "interesting" code has a comment adding context](https://stackoverflow.blog/2021/12/23/best-practices-for-writing-code-comments/)
 - [ ] Module level documentation is complete
-  - [ ] `index.html`
   - [ ] `changelog.md`
   - [ ] `README.md`
   - [ ] `__manifest__.py`
@@ -33,7 +35,10 @@ If this PR is for a bug fix, explain how to reproduce the bug
   - `README.md`
 - [ ] PR is being merged into the correct target branch (e.g. dev#1234 into E2E)
 - [ ] Mindfully select reviewer(s)
-  - Spread the love!  It's easy to request the same person each time, but that prevents knowledge sharing
+  > Given a large enough beta-tester and co-developer base, almost every problem will be characterized quickly and can be solved by someone who has encountered a similar problem before.
+  >
+  >[Linus's Law](https://github.com/dwmkerr/hacker-laws#linuss-law)
+  - Spread the love!  It's easy to request the same person each time, but that keeps us from getting better
   - You can add multiple reviewers. Don't be shy
   - If the merge is large, contains a lot of other developers code, feels complicated, etc... Please add your pod's Development SME as a reviewer
 
