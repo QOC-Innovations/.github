@@ -19,6 +19,10 @@ repository:
   delete_branch_on_merge: false
   enable_automated_security_fixes: true
   enable_vulnerability_alerts: true
+  merge_commit_message: PR_TITLE
+  merge_commit_title: PR_TITLE
+  squash_merge_commit_message: PR_TITLE
+  squash_merge_commit_title: COMMIT_MESSAGES
 
 #labels:
   # unused for now
