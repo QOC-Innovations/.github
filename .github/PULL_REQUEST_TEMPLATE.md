@@ -18,4 +18,4 @@ If it's not a bug, you can delete this section
 -->
 
 ###  **EXTREMELY IMPORTANT**
-- [ ] **Manifest Version:** Ensure your manifest files for any modules you've edited is updated! This will automatically update your app and help us keep track of what is different.
+- [ ] **Manifest Version:** Ensure your manifest files for any modules you've edited are updated! This will automatically update your app and help us keep track of what is different.
