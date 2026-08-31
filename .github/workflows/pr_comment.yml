@@ -1,0 +1,55 @@
+# Add a comment to new PRs with the contents of the previous commits
+# The bash syntax is a bit wacky to deal with getting new lines in the right place
+# There is probably a better way
+#
+# Overall process is to grab the related commits for the merge and keep the ones with more than two parents
+# since those should be other PRs
+# if the resulting comment would be empty don't post a comment
+# 
+# Since there are possibly new updates, want to just update the initial comment made by the bot
+# could make this check a bit more robust by checking the contents if there becomes more action based comments, for now not much of an issue
+on:
+    pull_request:
+        types: [opened, reopened, synchronize]
+
+jobs:
+    comment:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Add comment to PR
+              env:
+                COMMIT_URL: ${{ github.event.pull_request.commits_url }}
+                COMMENT_URL: ${{ github.event.pull_request.comments_url }}
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                existing_comments=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GITHUB_TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" $COMMENT_URL)
+                comment_id=$(echo $existing_comments | jq "[.[] | select(.user.login==\"github-actions[bot]\") | .id][0]")
+    
+                related_commits=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GITHUB_TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" $COMMIT_URL)
+                pr_message=$(echo "$related_commits" | jq -r '.[] | select(.parents | length > 1) | .commit.message | match("(.*)\n?.*").captures[0].string')
+    
+                content="{\"body\": \"Related Merges:"
+                while IFS= read -r line || [[ -n $line ]]; do content+="\n - "$(echo $line | sed 's/\\n//g'); done <<< $pr_message
+                content="$content\"}"
+    
+                if [[ $comment_id = null ]]
+                then
+                    echo "Create new comment"
+                    REQUEST_TYPE="POST"
+                    echo $COMMENT_URL
+                    echo $REQUEST_TYPE
+                else
+                    echo "Update comment"
+                    COMMENT_URL="$COMMENT_URL/$comment_id"
+                    COMMENT_URL=$(echo $COMMENT_URL | sed -E 's|issues/([[:digit:]]+)|issues|g')
+                    REQUEST_TYPE="PATCH"
+                    echo $COMMENT_URL
+                    echo $REQUEST_TYPE
+                fi
+    
+                if [[ $content != '{"body": "Related Merges:\n - "}' ]]
+                then 
+                    curl -L -X $REQUEST_TYPE -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GITHUB_TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" $COMMENT_URL -d "$content"
+                else
+                    echo "No merges to log."
+                fi
